@@ -1,8 +1,10 @@
 import "@/global.css";
 
 import { Slot } from "expo-router";
+import { ConvexReactClient } from "convex/react";
+import { ConvexProviderWithClerk } from "convex/react-clerk";
 
-import { ClerkProvider } from "@clerk/expo";
+import { ClerkProvider, useAuth } from "@clerk/expo";
 import { tokenCache } from "@clerk/expo/token-cache";
 import {
   DarkTheme,
@@ -23,8 +25,18 @@ if (!publishableKey) {
   );
 }
 
+const convexUrl = process.env.EXPO_PUBLIC_CONVEX_URL!;
+
+if (!convexUrl) {
+  throw new Error(
+    "Missing EXPO_PUBLIC_CONVEX_URL. Add it to your .env.local file.",
+  );
+}
+
+const convex = new ConvexReactClient(convexUrl);
+
 /**
- * Root layout that provides Clerk auth and theme context.
+ * Root layout that provides Clerk auth, Convex backend, and theme context.
  */
 export default function RootLayout() {
   // =================================
@@ -39,11 +51,13 @@ export default function RootLayout() {
 
   return (
     <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
-      <ThemeProvider
-        value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
-      >
-        <Slot />
-      </ThemeProvider>
+      <ConvexProviderWithClerk client={convex} useAuth={useAuth}>
+        <ThemeProvider
+          value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+        >
+          <Slot />
+        </ThemeProvider>
+      </ConvexProviderWithClerk>
     </ClerkProvider>
   );
 }
