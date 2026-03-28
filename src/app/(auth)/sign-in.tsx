@@ -1,6 +1,7 @@
 import { useCallback, useEffect } from "react";
 import { Platform, Pressable, Text, View } from "react-native";
-import * as Linking from "expo-linking";
+import * as AuthSession from "expo-auth-session";
+import { type Href, useRouter } from "expo-router";
 import * as WebBrowser from "expo-web-browser";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -33,6 +34,7 @@ export default function SignInScreen() {
   useWarmUpBrowser();
 
   const { startSSOFlow } = useSSO();
+  const router = useRouter();
 
   // =================================
   //        FUNCTIONS
@@ -45,16 +47,26 @@ export default function SignInScreen() {
     try {
       const { createdSessionId, setActive } = await startSSOFlow({
         strategy: "oauth_google",
-        redirectUrl: Linking.createURL("/"),
+        redirectUrl: AuthSession.makeRedirectUri(),
       });
 
       if (createdSessionId && setActive) {
-        await setActive({ session: createdSessionId });
+        await setActive({
+          session: createdSessionId,
+          navigate: async ({ session, decorateUrl }) => {
+            if (session?.currentTask) {
+              console.log("Pending session task:", session.currentTask);
+              return;
+            }
+
+            router.replace(decorateUrl("/") as Href);
+          },
+        });
       }
     } catch (err) {
       console.error("Google sign-in error:", JSON.stringify(err, null, 2));
     }
-  }, [startSSOFlow]);
+  }, [router, startSSOFlow]);
 
   // =================================
   //        RENDERING

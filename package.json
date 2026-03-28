@@ -8,6 +8,7 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
+    "test": "vitest run",
     "lint": "expo lint",
     "lint:md": "markdownlint-cli2 '**/*.md' '!**/node_modules/**' '!**/.git/**' '!**/.agents/**' '!**/.claude/**' '!**/.kiro/**' '!**/.expo/**' '!**/.windsurf/**' '!**/convex/_generated/**' --config .markdownlint.json",
     "lint:md:fix": "markdownlint-cli2 '**/*.md' '!**/node_modules/**' '!**/.git/**' '!**/.agents/**' '!**/.claude/**' '!**/.kiro/**' '!**/.expo/**' '!**/.windsurf/**' '!**/convex/_generated/**' --config .markdownlint.json --fix"
@@ -43,13 +44,19 @@
     "react-native-worklets": "0.5.1"
   },
   "devDependencies": {
+    "@edge-runtime/vm": "^5.0.0",
+    "@types/node": "^25.5.0",
     "@types/react": "~19.1.10",
+    "@types/react-test-renderer": "^19.1.0",
+    "convex-test": "^0.0.44",
     "eslint": "^9.0.0",
     "eslint-config-expo": "~10.0.0",
     "markdownlint-cli2": "^0.22.0",
     "postcss": "^8.5.8",
+    "react-test-renderer": "19.1.0",
     "tailwindcss": "^3.4",
-    "typescript": "~5.9.2"
+    "typescript": "~5.9.2",
+    "vitest": "^4.1.2"
   },
   "private": true
 }
