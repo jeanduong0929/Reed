@@ -3,9 +3,9 @@ import { Redirect, Stack } from "expo-router";
 import { useAuth } from "@clerk/expo";
 
 /**
- * Layout for the (home) route group. Redirects to sign-in if not authenticated.
+ * Layout for the (auth) route group. Redirects to home if already signed in.
  */
-export default function HomeLayout() {
+export default function AuthLayout() {
   // =================================
   //          HOOKS
   // =================================
@@ -20,8 +20,8 @@ export default function HomeLayout() {
     return null;
   }
 
-  if (!isSignedIn) {
-    return <Redirect href="/(auth)/sign-in" />;
+  if (isSignedIn) {
+    return <Redirect href="/(home)" />;
   }
 
   return <Stack screenOptions={{ headerShown: false }} />;

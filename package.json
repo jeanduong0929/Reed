@@ -13,6 +13,7 @@
     "lint:md:fix": "markdownlint-cli2 '**/*.md' '!**/node_modules/**' '!**/.git/**' '!**/.agents/**' '!**/.claude/**' '!**/.kiro/**' '!**/.expo/**' '!**/.windsurf/**' '!**/convex/_generated/**' --config .markdownlint.json --fix"
   },
   "dependencies": {
+    "@clerk/expo": "^3.1.5",
     "@react-navigation/bottom-tabs": "^7.2.0",
     "@react-navigation/elements": "^2.9.10",
     "@react-navigation/native": "^7.0.14",
@@ -24,6 +25,7 @@
     "expo-image": "~3.0.11",
     "expo-linking": "~8.0.11",
     "expo-router": "~6.0.23",
+    "expo-secure-store": "~15.0.8",
     "expo-splash-screen": "~31.0.13",
     "expo-status-bar": "~3.0.9",
     "expo-symbols": "~1.0.8",
