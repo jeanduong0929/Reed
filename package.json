@@ -8,7 +8,9 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "lint": "expo lint"
+    "lint": "expo lint",
+    "lint:md": "markdownlint-cli2 '**/*.md' '!**/node_modules/**' '!**/.git/**' '!**/.agents/**' '!**/.claude/**' '!**/.kiro/**' '!**/.expo/**' '!**/.windsurf/**' '!**/convex/_generated/**' --config .markdownlint.json",
+    "lint:md:fix": "markdownlint-cli2 '**/*.md' '!**/node_modules/**' '!**/.git/**' '!**/.agents/**' '!**/.claude/**' '!**/.kiro/**' '!**/.expo/**' '!**/.windsurf/**' '!**/convex/_generated/**' --config .markdownlint.json --fix"
   },
   "dependencies": {
     "@react-navigation/bottom-tabs": "^7.2.0",
@@ -39,6 +41,9 @@
   },
   "devDependencies": {
     "@types/react": "~19.1.10",
+    "eslint": "^9.0.0",
+    "eslint-config-expo": "~10.0.0",
+    "markdownlint-cli2": "^0.22.0",
     "typescript": "~5.9.2"
   },
   "private": true
