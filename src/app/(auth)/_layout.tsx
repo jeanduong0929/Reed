@@ -1,26 +1,25 @@
 import { Redirect, Stack } from "expo-router";
-
-import { useAuth } from "@clerk/expo";
+import { useConvexAuth } from "convex/react";
 
 /**
- * Layout for the (auth) route group. Redirects to home if already signed in.
+ * Layout for the (auth) route group. Redirects to home once Convex auth is ready.
  */
 export default function AuthLayout() {
   // =================================
   //          HOOKS
   // =================================
 
-  const { isSignedIn, isLoaded } = useAuth();
+  const { isAuthenticated, isLoading } = useConvexAuth();
 
   // =================================
   //        RENDERING
   // =================================
 
-  if (!isLoaded) {
+  if (isLoading) {
     return null;
   }
 
-  if (isSignedIn) {
+  if (isAuthenticated) {
     return <Redirect href="/(home)" />;
   }
 

@@ -4,13 +4,21 @@ import { beforeEach, describe, expect, test, vi } from "vitest";
 
 const mocks = vi.hoisted(() => ({
   authState: {
-    isLoaded: false,
+    isAuthenticated: false,
+    isLoading: true,
+  },
+  clerkState: {
+    isLoaded: true,
     isSignedIn: false,
   },
 }));
 
+vi.mock("convex/react", () => ({
+  useConvexAuth: () => mocks.authState,
+}));
+
 vi.mock("@clerk/expo", () => ({
-  useAuth: () => mocks.authState,
+  useAuth: () => mocks.clerkState,
 }));
 
 vi.mock("expo-router", async () => {
@@ -27,11 +35,13 @@ import AuthLayout from "@/app/(auth)/_layout";
 
 describe("AuthLayout", () => {
   beforeEach(() => {
-    mocks.authState.isLoaded = false;
-    mocks.authState.isSignedIn = false;
+    mocks.authState.isAuthenticated = false;
+    mocks.authState.isLoading = true;
+    mocks.clerkState.isLoaded = true;
+    mocks.clerkState.isSignedIn = false;
   });
 
-  test("renders nothing while Clerk auth is loading", async () => {
+  test("renders nothing while Convex auth is loading", async () => {
     let renderer: ReturnType<typeof create>;
 
     await act(async () => {
@@ -41,9 +51,9 @@ describe("AuthLayout", () => {
     expect(renderer!.toJSON()).toBeNull();
   });
 
-  test("redirects signed-in users to home", async () => {
-    mocks.authState.isLoaded = true;
-    mocks.authState.isSignedIn = true;
+  test("redirects only Convex-authenticated users to home", async () => {
+    mocks.authState.isLoading = false;
+    mocks.authState.isAuthenticated = true;
 
     let renderer: ReturnType<typeof create>;
 
@@ -56,8 +66,8 @@ describe("AuthLayout", () => {
     expect(redirect.props.href).toBe("/(home)");
   });
 
-  test("renders the auth stack when signed out", async () => {
-    mocks.authState.isLoaded = true;
+  test("renders the auth stack when Convex auth reports signed out", async () => {
+    mocks.authState.isLoading = false;
 
     let renderer: ReturnType<typeof create>;
 
